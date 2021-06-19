@@ -1,6 +1,15 @@
 # m17-tnc3-python
 Test app for interacting with the Mobilinkd TNC3 (and NucleoTNC) using M17 protocol over KISS.
 
+## Prerequisites
+
+ - pycodec2
+ - sounddevice
+ - numpy
+ - bluetooth
+
+    pip install pycodec2 sounddevice
+
 ## Usage
 
     $ ./m17tnc3.py <TNC3 MAC Address>
