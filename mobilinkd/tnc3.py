@@ -31,30 +31,31 @@ class TNC3(object):
     def decode_callsign_base40(encoded_bytes):
 
         # Convert byte array to integer value.
-        i,h = struct.unpack("IH", encoded_bytes)
-        encoded = (h << 32) | i
-
+        i,h = struct.unpack(">HI", encoded_bytes)
+        encoded = (i << 16) | h
+        
         # Unpack each base-40 digit and map them to the appriate character.
         result = io.StringIO()
         while encoded:
             result.write("xABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-/."[encoded % 40])
             encoded //= 40;
-
+        
         return result.getvalue();
+
 
     def ok(self):
         return self.checksum == 0
     
     def callsign(self, packet):
-        return self.decode_callsign_base40(packet[:6])
+        return self.decode_callsign_base40(packet[6:12])
         
     def open(self, mac):
+        port = 6
         self.ser = None
         self.ser = BluetoothSocket(RFCOMM)
-        # print("Connecting to {}:{}".format(self.device['host'], self.device['port']), file=sys.stderr)
-        self.ser.connect((mac, 6))
+        # print(f"Connecting to {mac:}/{port:}", file=sys.stderr)
+        self.ser.connect((mac, port))
 
-    
     def run(self, lsf_callback, audio_callback):
         if self.ser is None:
             raise RuntimeError('device not opened')
