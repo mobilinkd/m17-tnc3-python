@@ -8,8 +8,6 @@ Test app for interacting with the Mobilinkd TNC3 (and NucleoTNC) using M17 proto
  - numpy
  - bluetooth
 
-    pip install pycodec2 sounddevice
-
 ## Usage
 
     $ ./m17tnc3.py <TNC3 MAC Address>

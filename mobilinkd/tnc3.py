@@ -79,7 +79,7 @@ class TNC3(object):
         if len(packet.data) == 30:
             self.handle_lsf(packet.data)
             return True
-        elif len(packet.data) == 26:
+        elif len(packet.data) == 24:
             return self.handle_audio(packet.data)
         else:
             print("unhandled, len = %d" % len(packet.data), file=sys.stderr)
@@ -93,10 +93,6 @@ class TNC3(object):
         self.lsf_callback(self.callsign(packet))
  
     def handle_audio(self, packet):
-        self.crc.reset()
-        self.crc.crc(packet[6:])
-        checksum = self.crc.get()
-        if (checksum != 0): print(checksum, file=sys.stderr)
-        self.audio_callback(packet[8:24])
+        self.audio_callback(packet[8:])
        
     
